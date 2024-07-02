@@ -31,6 +31,7 @@ mod test {
     /// 
     /// And I don't know what caused it.
     #[test]
+    #[ignore = "This took 2.33s on my computer."]
     fn matmul_test() {
         super::matmul_test();
     }
