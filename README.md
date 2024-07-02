@@ -1,0 +1,1 @@
+Implement the algorithm in [https://en.algorithmica.org/hpc/](https://en.algorithmica.org/hpc/) using Rust.
