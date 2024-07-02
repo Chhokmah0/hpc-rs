@@ -20,7 +20,7 @@ fn unroll_for_sum(n: usize) -> usize {
         sum = sum.wrapping_add(4 * i + 2);
         sum = sum.wrapping_add(4 * i + 3);
     }
-    for i in (n / 4 * 4).. n {
+    for i in (n / 4 * 4)..n {
         sum = sum.wrapping_add(i);
     }
     sum
@@ -46,29 +46,21 @@ mod tests {
 
     #[bench]
     fn for_test(b: &mut Bencher) {
-        b.iter(|| {
-            black_box(for_sum(black_box(N)));
-        })
+        b.iter(|| for_sum(black_box(N)))
     }
 
     #[bench]
     fn unroll_for_test(b: &mut Bencher) {
-        b.iter(|| {
-            black_box(unroll_for_sum(black_box(N)));
-        })
+        b.iter(|| unroll_for_sum(black_box(N)))
     }
 
     #[bench]
     fn iterator_test(b: &mut Bencher) {
-        b.iter(|| {
-            black_box(iterator_sum(black_box(N)));
-        })
+        b.iter(|| iterator_sum(black_box(N)))
     }
 
     #[bench]
     fn iterator_test2(b: &mut Bencher) {
-        b.iter(|| {
-            black_box(iterator_sum2(black_box(N)));
-        })
+        b.iter(|| iterator_sum2(black_box(N)))
     }
 }
