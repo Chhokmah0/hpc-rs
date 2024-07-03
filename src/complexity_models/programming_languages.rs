@@ -31,7 +31,7 @@ mod test {
     /// 
     /// And I don't know what caused it.
     #[test]
-    // #[ignore = "This took 2s on my computer when opt-level=3."]
+    #[ignore = "This took 2s on my computer when opt-level=3."]
     fn matmul_test() {
         super::matmul_test();
     }
