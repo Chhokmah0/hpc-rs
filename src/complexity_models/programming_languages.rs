@@ -26,12 +26,12 @@ pub fn matmul_test() {
 
 #[cfg(test)]
 mod test {
-    /// This took 2.33s on my computer.\
+    /// When opt-level=3, this took 2s on my computer.\
     /// The same c++ code(using vector<double>) took 0.833s.
     /// 
     /// And I don't know what caused it.
     #[test]
-    #[ignore = "This took 2.33s on my computer."]
+    // #[ignore = "This took 2s on my computer when opt-level=3."]
     fn matmul_test() {
         super::matmul_test();
     }
