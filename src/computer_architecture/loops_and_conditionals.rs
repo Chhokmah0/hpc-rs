@@ -3,7 +3,7 @@ extern crate test;
 // It looks like the rust compiler optimizes all of this under opt-level=2/3.
 // when opt-level is 0. For sum is faster than iterators.
 // Unrolling loop does work when opt-level is 0/1.
-
+#[allow(dead_code)]
 fn for_sum(n: usize) -> usize {
     let mut sum = 0usize;
     for i in 0..n {
@@ -12,6 +12,7 @@ fn for_sum(n: usize) -> usize {
     sum
 }
 
+#[allow(dead_code)]
 fn unroll_for_sum(n: usize) -> usize {
     let mut sum = 0usize;
     for i in 0..n / 4 {
@@ -26,12 +27,14 @@ fn unroll_for_sum(n: usize) -> usize {
     sum
 }
 
+#[allow(dead_code)]
 fn iterator_sum(n: usize) -> usize {
     let mut sum = 0usize;
     (0..n).for_each(|i| sum = sum.wrapping_add(i));
     sum
 }
 
+#[allow(dead_code)]
 fn iterator_sum2(n: usize) -> usize {
     let sum = (0..n).fold(0usize, |sum, i| sum.wrapping_add(i));
     sum
