@@ -48,21 +48,21 @@ mod tests {
 
     #[bench]
     fn for_test(b: &mut Bencher) {
-        b.iter(|| for_sum(black_box(N)))
+        b.iter(|| black_box(for_sum(black_box(N))))
     }
 
     #[bench]
     fn unroll_for_test(b: &mut Bencher) {
-        b.iter(|| unroll_for_sum(black_box(N)))
+        b.iter(|| black_box(unroll_for_sum(black_box(N))))
     }
 
     #[bench]
     fn iterator_test(b: &mut Bencher) {
-        b.iter(|| iterator_sum(black_box(N)))
+        b.iter(|| black_box(iterator_sum(black_box(N))))
     }
 
     #[bench]
     fn iterator_test2(b: &mut Bencher) {
-        b.iter(|| iterator_sum2(black_box(N)))
+        b.iter(|| black_box(iterator_sum2(black_box(N))))
     }
 }
