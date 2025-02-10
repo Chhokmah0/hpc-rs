@@ -1,6 +1,7 @@
-use std::usize;
-
-use rand::{distr::{Distribution, Uniform}, Rng, SeedableRng};
+use rand::{
+    distr::{Distribution, Uniform},
+    SeedableRng,
+};
 const N: usize = 1_000_000;
 
 pub fn statistical_profiling_init() -> Vec<usize> {

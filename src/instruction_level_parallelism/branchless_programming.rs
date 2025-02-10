@@ -1,6 +1,3 @@
-use std::cmp::Ordering;
-use std::cmp::Ordering::*;
-
 use criterion::black_box;
 use rand::distr::{Distribution, Uniform};
 
