@@ -17,8 +17,8 @@ pub fn matmul_test() {
     let mut c = vec![vec![0.0; N]; N];
     for i in 0..N {
         for j in 0..N {
-            for k in 0..N {
-                c[i][j] += a[i][k] * b[k][j];
+            for (k, b_kj) in b.iter().enumerate() {
+                c[i][j] += a[i][k] * b_kj[j];
             }
         }
     }
