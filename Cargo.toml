@@ -8,10 +8,14 @@ rand = "0.9.1"
 criterion = "0.5"
 likely_stable = "~0.1.3"
 
+[profile.relwithdebinfo]
+inherits = "release"
+debug = 2
+
 [[bench]]
 name = "instruction_level_parallelism"
 harness = false
 
-[profile.relwithdebinfo]
-inherits = "release"
-debug = 2
+[[bench]]
+name = "number_theory"
+harness = false
