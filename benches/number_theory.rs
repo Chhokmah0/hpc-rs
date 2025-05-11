@@ -16,7 +16,29 @@ fn bench_binary_exponentiation(c: &mut Criterion) {
     });
 
     group.bench_function("inverse", |b| {
-        b.iter(|| inverse::<1000000007>(black_box(2)))
+        b.iter(|| inverse::<1_000_000_007>(black_box(2)))
+    });
+
+    group.bench_function("inverse exgcd rec 2^{-1} mod (1e9 + 7)", |b| {
+        b.iter(|| inverse_exgcd_rec::<1_000_000_007>(black_box(2)));
+    });
+
+    group.bench_function("inverse exgcd rec 564400443^{-1} mod (1e9 + 7)", |b| {
+        b.iter(|| inverse_exgcd_rec::<1_000_000_007>(black_box(564400443)));
+    });
+
+    group.bench_function("inverse exgcd iter 564400443^{-1} mod (1e9 + 7)", |b| {
+        b.iter(|| inverse_exgcd_iter::<1_000_000_007>(black_box(564400443)));
+    });
+
+    group.bench_function("sum vec slow", |b| {
+        b.iter(|| slow_sum::<1_000_000_007>(black_box(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10])))
+    });
+    group.bench_function("sum vec fast", |b| {
+        b.iter(|| fast_sum::<1_000_000_007>(black_box(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10])))
+    });
+    group.bench_function("sum vec faster", |b| {
+        b.iter(|| faster_sum::<1_000_000_007>(black_box(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10])))
     });
 
     group.finish();

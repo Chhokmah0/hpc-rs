@@ -40,22 +40,78 @@ pub const fn binpow_iter_with_mod(mut base: u64, mut exp: u64, mod_val: u32) -> 
     result
 }
 
-// 根据 show-asm 的结果，这里并没有被优化
-pub fn inverse<const M: u64>(mut a: u64) -> u64 {
+pub const fn inverse<const M: u64>(mut _a: u64) -> u64 {
     let mut result = 1;
-    let exp = M - 2;
-    for i in 0..=exp.ilog2() {
-        if (M >> i) & 1 == 1 {
-            result = (result * a) % M;
+    seq_macro::seq!(N in 0..=30 {
+        if (M - 2) & (1 << N) != 0 {
+            result = (result * _a) % M;
         }
-        a = (a * a) % M;
-    }
+        _a = (_a * _a) % M;
+    });
     result
 }
 
-pub fn inverse_monotonic(a: u64) -> u64 {
-    const M: u64 = 1_000_000_007;
-    inverse::<M>(a)
+pub const fn exgcd_rec(a: i32, b: i32) -> (i32, i32, i32) {
+    if a == 0 {
+        (b, 0, 1)
+    } else {
+        let (gcd, x1, y1) = exgcd_rec(b % a, a);
+        (gcd, y1 - (b / a) * x1, x1)
+    }
+}
+
+pub const fn inverse_exgcd_rec<const M: i32>(a: i32) -> Option<i32> {
+    let (gcd, x, _) = exgcd_rec(a, M);
+    if gcd == 1 {
+        Some((x % M + M) % M)
+    } else {
+        None
+    }
+}
+
+pub const fn inverse_exgcd_iter<const M: i32>(mut a: i32) -> Option<i32> {
+    let mut b = M;
+    let mut x = 1;
+    let mut y = 0;
+    while a > 1 {
+        y -= (b / a) * x;
+        b %= a;
+        std::mem::swap(&mut a, &mut b);
+        std::mem::swap(&mut x, &mut y);
+    }
+    if b == 1 {
+        Some((x % M + M) % M)
+    } else {
+        None
+    }
+}
+
+pub fn slow_sum<const M: i32>(a: Vec<i32>) -> i32 {
+    let mut sum = 0;
+    for val in a {
+        sum += val;
+        sum %= M;
+    }
+    sum
+}
+
+pub fn fast_sum<const M: i32>(a: Vec<i32>) -> i32 {
+    let mut sum = 0;
+    for val in a {
+        sum += val;
+        if sum >= M {
+            sum -= M;
+        }
+    }
+    sum
+}
+
+pub fn faster_sum<const M: i32>(a: Vec<i32>) -> i32 {
+    let mut sum = 0i64;
+    for val in a {
+        sum += val as i64;
+    }
+    (sum % M as i64) as i32
 }
 
 #[cfg(test)]
@@ -81,5 +137,20 @@ mod tests {
         assert_eq!(binpow_iter_with_mod(2, 10, 1000), 24);
         assert_eq!(binpow_iter_with_mod(3, 5, 1000), 243);
         assert_eq!(binpow_iter_with_mod(5, 0, 1000), 1);
+    }
+
+    #[test]
+    fn test_inverse() {
+        assert_eq!(inverse::<1000000007>(2), 500000004);
+        assert_eq!(inverse::<1000000007>(3), 333333336);
+        assert_eq!(inverse::<1000000007>(5), 400000003);
+    }
+
+    #[test]
+    fn test_inverse_exgcd_rec() {
+        assert_eq!(inverse_exgcd_rec::<1000000007>(2), Some(500000004));
+        assert_eq!(inverse_exgcd_rec::<1000000007>(3), Some(333333336));
+        assert_eq!(inverse_exgcd_rec::<1000000007>(5), Some(400000003));
+        assert_eq!(inverse_exgcd_rec::<1000000006>(6), None);
     }
 }
