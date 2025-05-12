@@ -1,4 +1,9 @@
+mod exgcd;
+mod montgomery_multiplication;
+
 use crate::arithmetic::*;
+pub use exgcd::*;
+pub use montgomery_multiplication::*;
 
 pub const fn binpow_rec<const M: u64>(base: u64, exp: u64) -> u64 {
     match exp {
@@ -49,69 +54,6 @@ pub const fn inverse<const M: u64>(mut _a: u64) -> u64 {
         _a = (_a * _a) % M;
     });
     result
-}
-
-pub const fn exgcd_rec(a: i32, b: i32) -> (i32, i32, i32) {
-    if a == 0 {
-        (b, 0, 1)
-    } else {
-        let (gcd, x1, y1) = exgcd_rec(b % a, a);
-        (gcd, y1 - (b / a) * x1, x1)
-    }
-}
-
-pub const fn inverse_exgcd_rec<const M: i32>(a: i32) -> Option<i32> {
-    let (gcd, x, _) = exgcd_rec(a, M);
-    if gcd == 1 {
-        Some((x % M + M) % M)
-    } else {
-        None
-    }
-}
-
-pub const fn inverse_exgcd_iter<const M: i32>(mut a: i32) -> Option<i32> {
-    let mut b = M;
-    let mut x = 1;
-    let mut y = 0;
-    while a > 1 {
-        y -= (b / a) * x;
-        b %= a;
-        std::mem::swap(&mut a, &mut b);
-        std::mem::swap(&mut x, &mut y);
-    }
-    if b == 1 {
-        Some((x % M + M) % M)
-    } else {
-        None
-    }
-}
-
-pub fn slow_sum<const M: i32>(a: Vec<i32>) -> i32 {
-    let mut sum = 0;
-    for val in a {
-        sum += val;
-        sum %= M;
-    }
-    sum
-}
-
-pub fn fast_sum<const M: i32>(a: Vec<i32>) -> i32 {
-    let mut sum = 0;
-    for val in a {
-        sum += val;
-        if sum >= M {
-            sum -= M;
-        }
-    }
-    sum
-}
-
-pub fn faster_sum<const M: i32>(a: Vec<i32>) -> i32 {
-    let mut sum = 0i64;
-    for val in a {
-        sum += val as i64;
-    }
-    (sum % M as i64) as i32
 }
 
 #[cfg(test)]
