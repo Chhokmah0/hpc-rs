@@ -13,6 +13,10 @@ seq-macro = "0.3.6"
 inherits = "release"
 debug = 2
 
+[profile.release-lto]
+inherits = "release"
+lto = true
+
 [[bench]]
 name = "instruction_level_parallelism"
 harness = false

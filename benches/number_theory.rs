@@ -21,8 +21,21 @@ fn bench_binary_exponentiation(c: &mut Criterion) {
         })
     });
 
-    group.bench_function("inverse", |b| {
+    group.bench_function("binpow inverse", |b| {
         b.iter(|| inverse::<1_000_000_007>(black_box(2)))
+    });
+
+    group.bench_function("binpow inverse without const", |b| {
+        b.iter(|| inverse_without_const(black_box(2), black_box(1_000_000_007)))
+    });
+
+    group.bench_function("binpow inverse using montgomery", |b| {
+        b.iter(|| inverse_using_montgomery(black_box(2), black_box(1_000_000_007)));
+    });
+
+    let montgomery = Montgomery::new(1_000_000_007);
+    group.bench_function("binpow inverse with montgomery ref", |b| {
+        b.iter(|| inverse_with_montgomery(black_box(2), black_box(&montgomery)));
     });
 
     group.finish();
@@ -59,6 +72,6 @@ fn bench_sum(c: &mut Criterion) {
 }
 
 // Criterion group for all benchmarks
-criterion_group!(benches, bench_binary_exponentiation);
+criterion_group!(benches, bench_binary_exponentiation, bench_exgcd, bench_sum);
 // Criterion main function
 criterion_main!(benches);

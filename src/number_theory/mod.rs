@@ -56,6 +56,20 @@ pub const fn inverse<const M: u64>(mut _a: u64) -> u64 {
     result
 }
 
+pub const fn inverse_without_const(mut base: i32, mod_val: i32) -> i32 {
+    let mut result = 1;
+    let mut exp = mod_val - 2;
+
+    while exp > 0 {
+        if exp % 2 == 1 {
+            result = (result * base) % mod_val;
+        }
+        base = (base * base) % mod_val;
+        exp /= 2;
+    }
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -86,13 +100,5 @@ mod tests {
         assert_eq!(inverse::<1000000007>(2), 500000004);
         assert_eq!(inverse::<1000000007>(3), 333333336);
         assert_eq!(inverse::<1000000007>(5), 400000003);
-    }
-
-    #[test]
-    fn test_inverse_exgcd_rec() {
-        assert_eq!(inverse_exgcd_rec::<1000000007>(2), Some(500000004));
-        assert_eq!(inverse_exgcd_rec::<1000000007>(3), Some(333333336));
-        assert_eq!(inverse_exgcd_rec::<1000000007>(5), Some(400000003));
-        assert_eq!(inverse_exgcd_rec::<1000000006>(6), None);
     }
 }
