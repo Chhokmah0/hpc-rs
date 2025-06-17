@@ -1,4 +1,4 @@
-use criterion::black_box;
+use std::hint::black_box;
 use rand::distr::{Distribution, Uniform};
 
 pub fn branchless_cost() {
