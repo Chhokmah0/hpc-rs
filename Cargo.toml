@@ -24,3 +24,7 @@ harness = false
 [[bench]]
 name = "number_theory"
 harness = false
+
+[[bench]]
+name = "external_memory"
+harness = false
