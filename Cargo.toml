@@ -28,3 +28,7 @@ harness = false
 [[bench]]
 name = "external_memory"
 harness = false
+
+[[bench]]
+name = "simd"
+harness = false
