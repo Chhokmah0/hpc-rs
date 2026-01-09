@@ -1,6 +1,7 @@
 //! There is nothing public in this module. Just for testing alignment.
 //! repr(rust) and repr(C) are used to control the layout of structs in Rust.
 
+#[allow(dead_code)]
 struct DataRust {
     a: u8,
     b: u16,
@@ -8,6 +9,7 @@ struct DataRust {
     d: u8,
 }
 
+#[allow(dead_code)]
 #[repr(C)]
 struct DataC {
     a: u8,
@@ -16,6 +18,7 @@ struct DataC {
     d: u8,
 }
 
+#[allow(dead_code)]
 #[repr(C)]
 struct DataCAligned {
     c: u32,
@@ -24,17 +27,20 @@ struct DataCAligned {
     d: u8,
 }
 
+#[allow(dead_code)]
 struct Data2Rust {
     a: u64,
     b: u8,
 }
 
+#[allow(dead_code)]
 #[repr(C)]
 struct Data2C {
     a: u64,
     b: u8,
 }
 
+#[allow(dead_code)]
 #[repr(C, packed)]
 struct Data2CPacked {
     a: u64,
