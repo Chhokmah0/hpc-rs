@@ -75,13 +75,13 @@ impl Montgomery {
     /// convert montgomery space to normal space
     /// returns a number in the (0, n] range
     #[inline]
-    pub fn from(&self, m: MontgomerySpace) -> u32 {
+    pub fn to(&self, m: MontgomerySpace) -> u32 {
         self.reduce(m.x as u64).x
     }
 
     /// convert normal space to montgomery space
     #[inline]
-    pub fn to(&self, x: u32) -> MontgomerySpace {
+    pub fn from(&self, x: u32) -> MontgomerySpace {
         // let mut x = ((x as i64) * self.r as i64) % self.n as i64;
         // if x < 0 {
         //     x += self.n as i64;
@@ -101,8 +101,8 @@ impl Montgomery {
 
 pub fn inverse_using_montgomery(base: i32, mod_val: i32) -> i32 {
     let montgomery = Montgomery::new(mod_val);
-    let mut result = montgomery.to(1);
-    let mut base = montgomery.to(base as u32);
+    let mut result = montgomery.from(1);
+    let mut base = montgomery.from(base as u32);
     let mut exp = mod_val - 2;
 
     while exp > 0 {
@@ -112,12 +112,12 @@ pub fn inverse_using_montgomery(base: i32, mod_val: i32) -> i32 {
         base = montgomery.mul(base, base);
         exp >>= 1;
     }
-    montgomery.from(result) as i32
+    montgomery.to(result) as i32
 }
 
 pub fn inverse_with_montgomery(base: i32, montgomery: &Montgomery) -> i32 {
-    let mut result = montgomery.to(1);
-    let mut base = montgomery.to(base as u32);
+    let mut result = montgomery.from(1);
+    let mut base = montgomery.from(base as u32);
     let mut exp = montgomery.n - 2;
 
     while exp > 0 {
@@ -127,7 +127,7 @@ pub fn inverse_with_montgomery(base: i32, montgomery: &Montgomery) -> i32 {
         base = montgomery.mul(base, base);
         exp >>= 1;
     }
-    montgomery.from(result) as i32
+    montgomery.to(result) as i32
 }
 
 #[cfg(test)]
@@ -137,9 +137,9 @@ mod tests {
     #[test]
     fn test_montgomery() {
         let montgomery = Montgomery::new(1_000_000_007);
-        let a = montgomery.to(2);
-        let b = montgomery.to(3);
-        assert_eq!(montgomery.from(montgomery.mul(a, b)), 6);
+        let a = montgomery.from(2);
+        let b = montgomery.from(3);
+        assert_eq!(montgomery.to(montgomery.mul(a, b)), 6);
     }
 
     #[test]
